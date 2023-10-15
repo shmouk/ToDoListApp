@@ -2,14 +2,16 @@ import Foundation
  
 class TasksTableViewModel {
     let taskAPI = TaskAPI()
-    var taskData = Bindable([TaskModel]())
+    var taskData = Bindable([[TaskModel](), [TaskModel]()])
     
     init() {
-        taskAPI.notificationCenterManager.addObserver(self, selector: #selector(newDataHandle), forNotification: .loadDataNotification)
+        taskAPI.notificationCenterManager.addObserver(self, selector: #selector(modifyDataHandle), forNotification: .modifyDataNotification)
+
     }
     
     deinit {
-        taskAPI.notificationCenterManager.removeObserver(self, forNotification: .loadDataNotification)
+        taskAPI.notificationCenterManager.removeObserver(self, forNotification: .modifyDataNotification)
+
     }
     
     func readTask(completion: @escaping (String) -> Void) {
@@ -25,12 +27,14 @@ class TasksTableViewModel {
             }
         }
     }
-    func deleteTask(_ data: TaskModel, completion: @escaping (String) -> Void) {
-        taskAPI.removeData(data) { result in
+    
+    func updateTask(_ data: TaskModel, completion: @escaping (String) -> Void) {
+        taskAPI.updateValue(data) { result in
             switch result {
                 
             case .success(let text):
                 completion(text.info)
+                self.setValue()
                 
             case .failure(let error):
                 completion(error.localizedDescription)
@@ -39,13 +43,14 @@ class TasksTableViewModel {
     }
     
     private func setValue() {
-        taskData.value = taskAPI.taskData
+        taskData.value[0] = taskAPI.currentTaskData
+        taskData.value[1] = taskAPI.readyTaskData
     }
 }
 
 extension TasksTableViewModel {
     @objc
-    func newDataHandle() {
+    func modifyDataHandle() {
         setValue()
     }
 }

@@ -3,9 +3,17 @@ import RealmSwift
 
 class TaskAPI {
     let notificationCenterManager = NotificationCenterManager.shared
-    var taskData = [TaskModel]() {
+    
+    var readyTaskData = [TaskModel]() {
+       didSet {
+           print("1. modddiiiiiiffyyyyy")
+           notificationCenterManager.postCustomNotification(named: .modifyDataNotification)
+       }
+   }
+    var currentTaskData = [TaskModel]() {
         didSet {
-            notificationCenterManager.postCustomNotification(named: .loadDataNotification)
+            print("2. modddiiiiiiffyyyyy")
+            notificationCenterManager.postCustomNotification(named: .modifyDataNotification)
         }
     }
     
@@ -40,8 +48,32 @@ class TaskAPI {
                 let realm = try Realm()
                 let data = realm.objects(TaskModel.self)
                 for task in data {
-                    self.taskData.append(task)
-                    completion(.success(RequestComplete.successDownload))
+                    task.isReady ? self.readyTaskData.append(task) : self.currentTaskData.append(task)
+                }
+                print("tasks", self.readyTaskData.count, self.currentTaskData.count)
+
+                completion(.success(RequestComplete.successDownload))
+
+            } catch let error as NSError {
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func updateValue(_ data: TaskModel, completion: @escaping ResultCompletion) {
+        DispatchQueue.main.async { [weak self] in
+            do {
+                let realm = try Realm()
+                let tasks = realm.objects(TaskModel.self)
+                guard let task = tasks.filter("id == %@", data.id).first else {
+                    completion(.failure(RequestError.updateValueError))
+                    return
+                }
+                
+                try realm.write {
+                    task.isReady = true
+                    self?.modifyValue(task)
+                    completion(.success(RequestComplete.successUpdate))
                 }
             } catch let error as NSError {
                 completion(.failure(error))
@@ -49,26 +81,31 @@ class TaskAPI {
         }
     }
     
-    func removeData(_ data: TaskModel, completion: @escaping ResultCompletion) {
-        DispatchQueue.main.async {
-            do {
-                let realm = try Realm()
-                let objectToDelete = realm.objects(TaskModel.self).filter("id == %@", data.id).first
-                
-                guard let object = objectToDelete else {
-                    completion(.failure(RequestError.deleteError))
-                    return
-                }
-                try realm.write {
-                    realm.delete(object)
-                }
-                completion(.success(RequestComplete.successDownload))
-                
-            } catch let error as NSError {
-                completion(.failure(error))
-            }
-        }
+    func modifyValue(_ task: TaskModel) {
+        currentTaskData.removeAll(where: { $0.id == task.id })
+        readyTaskData.append(task)
     }
+    
+//    func removeData(_ data: TaskModel, completion: @escaping ResultCompletion) {
+//        DispatchQueue.main.async {
+//            do {
+//                let realm = try Realm()
+//                let objectToDelete = realm.objects(TaskModel.self).filter("id == %@", data.id).first
+//                
+//                guard let object = objectToDelete else {
+//                    completion(.failure(RequestError.deleteError))
+//                    return
+//                }
+//                try realm.write {
+//                    realm.delete(object)
+//                    completion(.success(RequestComplete.successDownload))
+//
+//                }
+//            } catch let error as NSError {
+//                completion(.failure(error))
+//            }
+//        }
+//    }
     
     private func randomString(withLength length: Int) -> String {
         let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()_-"

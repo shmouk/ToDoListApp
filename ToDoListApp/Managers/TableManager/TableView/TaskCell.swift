@@ -10,13 +10,8 @@ class TaskCell : UITableViewCell {
         super.setHighlighted(highlighted, animated: animated)
     }
 
-//    override func setSelected(_ selected: Bool, animated: Bool) {
-//        setAsSelectedOrHighlighted(selectedOrHighlighted: selected, animated: animated)
-//        super.setSelected(selected, animated: animated)
-//    }
-
     func setAsSelectedOrHighlighted(selectedOrHighlighted: Bool, animated: Bool) {
-        let backgroundColor = selectedOrHighlighted ? UIColor.white : UIColor.clear
+        let backgroundColor = selectedOrHighlighted ? UIColor.white.withAlphaComponent(0.2) : UIColor.clear
 
         let action = {
             self.contentView.backgroundColor = backgroundColor

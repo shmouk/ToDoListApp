@@ -1,9 +1,10 @@
 typealias ResultCompletion = (Result<RequestComplete, Error>) -> Void
+typealias TaskCompletion = (Result<TaskModel, Error>) -> Void
 
 enum RequestError: Error {
     case invalidText
     case invalidRequest
-    case deleteError
+    case updateValueError
     
     var info: String {
         switch self {
@@ -14,8 +15,8 @@ enum RequestError: Error {
         case .invalidRequest:
             return Constants.invalidRequest
             
-        case .deleteError:
-            return Constants.deleteError
+        case .updateValueError:
+            return Constants.updateValueError
         }
     }
 }
@@ -23,6 +24,7 @@ enum RequestError: Error {
 enum RequestComplete: String {
     case successUpload
     case successDownload
+    case successUpdate
     
     var info: String {
         switch self {
@@ -32,7 +34,9 @@ enum RequestComplete: String {
             
         case .successDownload:
             return Constants.successUpload
-            
+         
+        case .successUpdate:
+            return Constants.successUpdate
         }
     }
 }

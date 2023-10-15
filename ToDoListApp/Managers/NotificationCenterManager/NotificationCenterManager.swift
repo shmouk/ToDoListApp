@@ -19,5 +19,7 @@ class NotificationCenterManager {
 }
 
 extension Notification.Name {
-    static let loadDataNotification = Notification.Name("loadDataNotification")
+    static let updateDataNotification = Notification.Name("updateDataNotification")
+    static let modifyDataNotification = Notification.Name("modifyDataNotification")
+
 }

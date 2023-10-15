@@ -25,6 +25,10 @@ final class InterfaceBuilder {
         return view
     }
      
+    static func makeDeleteImage() -> UIImage? {
+        .init(named: "deleteIcon")
+    }
+    
     static func makeCustomNavBarButton() -> UIBarButtonItem {
         let button = UIBarButtonItem()
         button.image = UIImage(systemName: "plus")
@@ -82,6 +86,15 @@ final class InterfaceBuilder {
         textView.isEditable = true
         //        textView.textContainer.lineBreakMode = .byWordWrapping
         return textView
+    }
+    
+    static func makeShadow(for view: UIView) -> UIView {
+        view.layer.shadowRadius = 5
+        view.layer.shadowOpacity = 0.2
+        view.layer.shadowOffset = CGSize(width: 3, height: 5)
+        view.layer.shadowColor = UIColor.black.cgColor
+        view.layer.masksToBounds = true
+        return view
     }
 }
 

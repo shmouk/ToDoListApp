@@ -11,6 +11,7 @@
 		AD6CAF1C2AD9AD0300793015 /* TasksTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD6CAF1B2AD9AD0300793015 /* TasksTableViewController.swift */; };
 		AD6CAF212AD9AD0700793015 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD6CAF202AD9AD0700793015 /* Assets.xcassets */; };
 		AD6CAF242AD9AD0700793015 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AD6CAF222AD9AD0700793015 /* LaunchScreen.storyboard */; };
+		AD88B82D2ADBECFF00AF860A /* TaskHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD88B82C2ADBECFF00AF860A /* TaskHeaderView.swift */; };
 		AD993E4B2ADB1FD40096A50B /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = AD993E4A2ADB1FD40096A50B /* Realm */; };
 		AD993E4D2ADB1FD40096A50B /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = AD993E4C2ADB1FD40096A50B /* RealmSwift */; };
 		AD993E4F2ADB25C60096A50B /* UINavigationBar + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD993E4E2ADB25C60096A50B /* UINavigationBar + Extension.swift */; };
@@ -56,6 +57,7 @@
 		AD6CAF202AD9AD0700793015 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AD6CAF232AD9AD0700793015 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AD6CAF252AD9AD0700793015 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AD88B82C2ADBECFF00AF860A /* TaskHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskHeaderView.swift; sourceTree = "<group>"; };
 		AD993E4E2ADB25C60096A50B /* UINavigationBar + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationBar + Extension.swift"; sourceTree = "<group>"; };
 		AD993E522ADB41CA0096A50B /* RoundedCellDecorator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCellDecorator.swift; sourceTree = "<group>"; };
 		AD993E542ADB53EA0096A50B /* String + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String + Extension.swift"; sourceTree = "<group>"; };
@@ -194,8 +196,6 @@
 			isa = PBXGroup;
 			children = (
 				ADFFB9022AD9B731004B21A7 /* InterfaceBuilder.swift */,
-				AD993E522ADB41CA0096A50B /* RoundedCellDecorator.swift */,
-				ADFFB8FF2AD9B6A3004B21A7 /* TaskCell.swift */,
 			);
 			path = InterfaceBuilder;
 			sourceTree = "<group>";
@@ -204,7 +204,7 @@
 			isa = PBXGroup;
 			children = (
 				ADFFB8F82AD9B537004B21A7 /* TableViewDataSource.swift */,
-				ADFFB8FD2AD9B63A004B21A7 /* Cell */,
+				ADFFB8FD2AD9B63A004B21A7 /* TableView */,
 			);
 			path = TableManager;
 			sourceTree = "<group>";
@@ -218,11 +218,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		ADFFB8FD2AD9B63A004B21A7 /* Cell */ = {
+		ADFFB8FD2AD9B63A004B21A7 /* TableView */ = {
 			isa = PBXGroup;
 			children = (
+				AD993E522ADB41CA0096A50B /* RoundedCellDecorator.swift */,
+				ADFFB8FF2AD9B6A3004B21A7 /* TaskCell.swift */,
+				AD88B82C2ADBECFF00AF860A /* TaskHeaderView.swift */,
 			);
-			path = Cell;
+			path = TableView;
 			sourceTree = "<group>";
 		};
 		ADFFB9042AD9BA6C004B21A7 /* Extensions */ = {
@@ -362,6 +365,7 @@
 				ADFFB9032AD9B731004B21A7 /* InterfaceBuilder.swift in Sources */,
 				AD993E532ADB41CA0096A50B /* RoundedCellDecorator.swift in Sources */,
 				ADFFB9002AD9B6A3004B21A7 /* TaskCell.swift in Sources */,
+				AD88B82D2ADBECFF00AF860A /* TaskHeaderView.swift in Sources */,
 				ADFFB9132ADAD29B004B21A7 /* BaseViewController.swift in Sources */,
 				AD6CAF1C2AD9AD0300793015 /* TasksTableViewController.swift in Sources */,
 				ADFFB91D2ADAE68C004B21A7 /* AlertManager.swift in Sources */,
