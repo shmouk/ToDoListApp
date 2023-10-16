@@ -12,16 +12,8 @@ class TaskCell : UITableViewCell {
     }
 
     func setAsSelectedOrHighlighted(selectedOrHighlighted: Bool, animated: Bool) {
-        let backgroundColor = selectedOrHighlighted ? UIColor.white.withAlphaComponent(0.2) : UIColor.clear
-
-        let action = {
-            self.contentView.backgroundColor = backgroundColor
-        }
-
-        if animated {
-            UIView.animate(withDuration: 3.0, delay: 0, options: .curveEaseInOut, animations: action, completion: nil)
-        } else {
-            action()
+        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
+            self.contentView.backgroundColor = selectedOrHighlighted ? UIColor.gray.withAlphaComponent(0.4) : UIColor.clear
         }
     }
     
