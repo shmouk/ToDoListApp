@@ -8,9 +8,14 @@ class AddingTaskViewController: BaseViewController {
     lazy var titleTextField = InterfaceBuilder.makeTextField()
     lazy var descriptionTextView = InterfaceBuilder.makeTextView()
     lazy var createTaskButton = InterfaceBuilder.makeButton(withTitle: "Create Task")
-    lazy var titleLabel = InterfaceBuilder.makeLabel(title: "Title:")
-    lazy var subtitleLabel = InterfaceBuilder.makeLabel(title: "Subtitle:")
-
+    lazy var titleLabel = InterfaceBuilder.makeLabel(title: Constants.title)
+    lazy var subtitleLabel = InterfaceBuilder.makeLabel(title: Constants.subtitle)
+    lazy var separatorView = InterfaceBuilder.makeSeparatorView(alpha: 0.4)
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        KeyboardNotificationManager.hideKeyboard()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUI()
@@ -27,7 +32,8 @@ class AddingTaskViewController: BaseViewController {
                          titleTextField,
                          subtitleLabel,
                          descriptionTextView,
-                         createTaskButton)
+                         createTaskButton,
+                         separatorView)
     }
     
     private func setupResponsibilities() {
@@ -48,8 +54,12 @@ private extension AddingTaskViewController {
         let title = titleTextField.text
         let subtitle = descriptionTextView.text
         
-        viewModel.createTask(titleText: title, descriptionText: subtitle) { infoText in
-            AlertManager.showAlert(message: infoText, viewController: self)
+        viewModel.createTask(titleText: title, descriptionText: subtitle) { [weak self] infoText in
+            guard let self = self else { return }
+            
+            AlertManager.showAlert(title: infoText, viewController: self)
+            self.titleTextField.text = ""
+            self.descriptionTextView.text = "Input text"
         }
     }
 }
@@ -85,7 +95,7 @@ extension AddingTaskViewController: UITextViewDelegate {
             return false
         }
         let newText = (textView.text as NSString).replacingCharacters(in: range, with: text)
-        return newText.count <= 60
+        return newText.count <= 90
     }
 }
 

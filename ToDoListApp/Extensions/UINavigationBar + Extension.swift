@@ -7,8 +7,9 @@ extension UINavigationController {
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = .white
         appearance.shadowColor = .tint
-        appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
-        
+        appearance.titleTextAttributes = [.foregroundColor : UIColor.tint,
+                                          .font: UIFont.systemFont(ofSize: 20, weight: .medium)]
+
         navigationBar.scrollEdgeAppearance = appearance
         navigationBar.compactAppearance = appearance
         navigationBar.standardAppearance = appearance

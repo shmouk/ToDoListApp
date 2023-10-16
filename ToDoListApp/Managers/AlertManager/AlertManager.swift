@@ -1,15 +1,17 @@
 import UIKit
 
 class AlertManager {
-    
-    static func showAlert(title: String = Constants.messageTitle, message: String, viewController: UIViewController) {
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-        alertController.addAction(okAction)
+    static func showAlert(title: String, viewController: UIViewController) {
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+        
         viewController.present(alertController, animated: true, completion: nil)
+
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+            alertController.dismiss(animated: true, completion: nil)
+        }
     }
     
-    static func showConfirmationAlert(title: String = Constants.messageTitle, message: String, viewController: UIViewController, completion: @escaping () -> Void) {
+    static func showConfirmationAlert(title: String = Constants.message, message: String, viewController: UIViewController, completion: @escaping () -> Void) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)

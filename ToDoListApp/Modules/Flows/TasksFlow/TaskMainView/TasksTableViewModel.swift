@@ -1,56 +1,47 @@
 import Foundation
  
 class TasksTableViewModel {
-    let taskAPI = TaskAPI()
-    var taskData = Bindable([[TaskModel](), [TaskModel]()])
-    
-    init() {
-        taskAPI.notificationCenterManager.addObserver(self, selector: #selector(modifyDataHandle), forNotification: .modifyDataNotification)
+    let taskAPI = TaskAPI.shared
+    var taskData = Bindable([[TaskModel]]())
 
-    }
     
-    deinit {
-        taskAPI.notificationCenterManager.removeObserver(self, forNotification: .modifyDataNotification)
-
-    }
-    
-    func readTask(completion: @escaping (String) -> Void) {
-        taskAPI.readData { [weak self] result in
-            switch result {
-                
-            case .success(let text):
-                completion(text.info)
-                self?.setValue()
-                
-            case .failure(let error):
-                completion(error.localizedDescription)
-            }
+    func readTask() {
+        taskAPI.taskData.bind { [weak self] data in
+            guard let self = self else { return }
+            self.sortData(data)
         }
+    }
+    
+    private func sortData(_ data: [TaskModel]) {
+        var readyTaskData = [TaskModel]()
+        var currentTaskData = [TaskModel]()
+        
+        for task in data {
+            task.isReady ? readyTaskData.append(task) : currentTaskData.append(task)
+        }
+        taskData.value = [currentTaskData, readyTaskData]
     }
     
     func updateTask(_ data: TaskModel, completion: @escaping (String) -> Void) {
-        taskAPI.updateValue(data) { result in
-            switch result {
-                
-            case .success(let text):
-                completion(text.info)
-                self.setValue()
-                
-            case .failure(let error):
-                completion(error.localizedDescription)
-            }
+        let completionHandler: ResultCompletion = { [weak self] result in
+            self?.handleResult(result, completion)
+        }
+        
+        if data.isReady {
+            taskAPI.removeData(data, completion: completionHandler)
+        } else {
+            taskAPI.updateValue(data, completion: completionHandler)
         }
     }
-    
-    private func setValue() {
-        taskData.value[0] = taskAPI.currentTaskData
-        taskData.value[1] = taskAPI.readyTaskData
-    }
-}
 
-extension TasksTableViewModel {
-    @objc
-    func modifyDataHandle() {
-        setValue()
+    private func handleResult(_ result: RequestResult, _ completion: @escaping (String) -> Void) {
+        switch result {
+        case .success(let text):
+            readTask()
+            completion(text.info)
+            
+        case .failure(let error):
+            completion(error.localizedDescription)
+        }
     }
 }

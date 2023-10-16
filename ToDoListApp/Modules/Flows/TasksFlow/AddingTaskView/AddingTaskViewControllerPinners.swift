@@ -36,5 +36,12 @@ extension AddingTaskViewController {
             createTaskButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
             createTaskButton.heightAnchor.constraint(equalToConstant: 64)
         ])
+        
+        NSLayoutConstraint.activate([
+            separatorView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
+            separatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            separatorView.widthAnchor.constraint(equalToConstant: 64),
+            separatorView.heightAnchor.constraint(equalToConstant: 4)
+        ])
     }
 }

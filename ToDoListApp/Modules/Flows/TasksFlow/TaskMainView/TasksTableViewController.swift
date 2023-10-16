@@ -2,14 +2,14 @@ import UIKit
 import RealmSwift
 
 class TasksTableViewController: BaseViewController {
-    private let dataSource = TableViewDataSource()
     private let viewModel = TasksTableViewModel()
-    
+    private let dataSource = TaskDataSource()
+
     var coordinator: CoordinatorProtocol?
-    
+
     lazy var tableView = InterfaceBuilder.makeTableView()
     lazy var rightNavButton = InterfaceBuilder.makeCustomNavBarButton()
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loadData()
@@ -31,6 +31,7 @@ class TasksTableViewController: BaseViewController {
     private func settingTableView() {
         tableView.delegate = self
         tableView.dataSource = dataSource
+        tableView.separatorStyle = .none
         tableView.register(TaskCell.self, forCellReuseIdentifier: TaskCell.description())
         tableView.register(TaskHeaderView.self, forHeaderFooterViewReuseIdentifier: TaskHeaderView.description())
     }
@@ -40,22 +41,27 @@ class TasksTableViewController: BaseViewController {
     }
     
     private func setupResponsibilities() {
+        self.navigationItem.title = Constants.taskList
         self.navigationItem.rightBarButtonItem = rightNavButton
         rightNavButton.target = self
         rightNavButton.action = #selector(addTaskTapped)
     }
     
     private func loadData() {
-        viewModel.readTask { infoText in
-            AlertManager.showAlert(message: infoText, viewController: self)
-        }
+        viewModel.readTask()
     }
     
     private func bindViewModel() {
         viewModel.taskData.bind { [weak self] data in
             guard let self = self else { return }
-            dataSource.taskData = data
-            tableView.reloadData()
+            self.dataSource.taskData = data
+            self.reloadTable()
+        }
+    }
+    
+    private func reloadTable() {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
         }
     }
 }
@@ -68,19 +74,12 @@ private extension TasksTableViewController {
 }
 
 extension TasksTableViewController: UITableViewDelegate {
-//    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-//        guard let cell = tableView.dequeueReusableCell(withIdentifier: TaskCell.description(), for: indexPath) as? TaskCell else { return }
-//        cell.backgroundColor = .tint
-//    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        updateCell(at: indexPath)
+        updateCell(at: indexPath, needsConfirmation: true)
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let rows = tableView.numberOfRows(inSection: indexPath.section)
-
-        RoundedCellDecorator.roundCorners(at: indexPath, totalRows: rows, for: cell, cornerRadius: 16.0)
+        self.customTableView(tableView, willDisplay: cell, forRowAt: indexPath)
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -88,36 +87,41 @@ extension TasksTableViewController: UITableViewDelegate {
     }
 
     private func deleteSwipeConfig(at indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let filterAction = UIContextualAction(style: .normal, title: Constants.deleteTitle) { [weak self] (action, view, bool) in
-            self?.updateCell(at: indexPath)
+        let filterAction = UIContextualAction(style: .normal, title: nil) { [weak self] (action, view, bool) in
+            self?.updateCell(at: indexPath, needsConfirmation: false)
             bool(true)
         }
+    
         filterAction.image = InterfaceBuilder.makeDeleteImage()
         filterAction.backgroundColor = .bg
-//        filterAction.backgroundColor = .red
-
         return UISwipeActionsConfiguration(actions: [filterAction])
     }
     
-    private func updateCell(at indexPath: IndexPath) {
-        AlertManager.showConfirmationAlert(message: Constants.isCompleteTitle, viewController: self) { [weak self] in
+    private func updateCell(at indexPath: IndexPath, needsConfirmation: Bool) {
+        let task = dataSource.taskData[indexPath.section][indexPath.row]
+        
+        let updateCompletionHandler: (String) -> Void = { [weak self] text in
             guard let self = self else { return }
-            let task = self.dataSource.taskData[indexPath.section][indexPath.row]
-            self.viewModel.updateTask(task) { _ in
-                self.tableView.reloadData()
-            }
+            
+            AlertManager.showAlert(title: text, viewController: self)
+            self.reloadTable()
+        }
+        
+        guard needsConfirmation else {
+            viewModel.updateTask(task, completion: updateCompletionHandler)
+            return
+        }
+
+        AlertManager.showConfirmationAlert(message: Constants.isComplete, viewController: self) { [weak self] in
+            self?.viewModel.updateTask(task, completion: updateCompletionHandler)
         }
     }
 }
 
 extension TasksTableViewController {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        2
-    }
-    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: TaskHeaderView.description()) as? TaskHeaderView
-        let taskHeaderTitle = [Constants.curentTitle, Constants.completedTitle]
+        let taskHeaderTitle = [Constants.current, Constants.complete]
         headerView?.configure(with: taskHeaderTitle[section])
         return headerView
     }
@@ -126,5 +130,4 @@ extension TasksTableViewController {
         42
     }
 }
-
 

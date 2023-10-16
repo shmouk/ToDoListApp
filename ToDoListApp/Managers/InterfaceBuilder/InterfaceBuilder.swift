@@ -5,26 +5,36 @@ final class InterfaceBuilder {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.backgroundColor = .clear
+        tableView.showsVerticalScrollIndicator = false
         return tableView
     }
     
-    static func makeLabel(title: String = "", textColor: UIColor = .tint) -> UILabel {
+    static func makeLabel(title: String? = nil, textColor: UIColor = .tint) -> UILabel {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = textColor
         label.textAlignment = .left
         label.numberOfLines = 0
+        label.lineBreakMode = .byCharWrapping
         label.text = title
         return label
     }
     
-    static func makeElipseView() -> UIView {
+    static func makeView() -> UIView {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.roundCornersToEllipse()
         return view
     }
-     
+    
+    static func makeSeparatorView(alpha: CGFloat = 0.2) -> UIView {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .other.withAlphaComponent(alpha)
+        view.layer.cornerRadius = 2
+        view.layer.masksToBounds = false
+        return view
+    }
+    
     static func makeDeleteImage() -> UIImage? {
         .init(named: "deleteIcon")
     }
@@ -59,10 +69,11 @@ final class InterfaceBuilder {
         textField.layer.cornerRadius = 16
         textField.layer.masksToBounds = true
         let placeholderText = "Input text"
-        let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.black]
+        let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.lightGray]
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         textField.attributedPlaceholder = attributedPlaceholder
         let leftPaddingView = UIView(frame: CGRect(x: 8, y: 0, width: 10, height: 48))
+        leftPaddingView.isUserInteractionEnabled = false
         leftPaddingView.backgroundColor = .clear
         textField.leftView = leftPaddingView
         textField.leftViewMode = .always
@@ -86,15 +97,6 @@ final class InterfaceBuilder {
         textView.isEditable = true
         //        textView.textContainer.lineBreakMode = .byWordWrapping
         return textView
-    }
-    
-    static func makeShadow(for view: UIView) -> UIView {
-        view.layer.shadowRadius = 5
-        view.layer.shadowOpacity = 0.2
-        view.layer.shadowOffset = CGSize(width: 3, height: 5)
-        view.layer.shadowColor = UIColor.black.cgColor
-        view.layer.masksToBounds = true
-        return view
     }
 }
 

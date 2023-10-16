@@ -3,8 +3,9 @@ import UIKit
 class TaskCell : UITableViewCell {
     lazy var titleLabel = InterfaceBuilder.makeLabel()
     lazy var subtitleLabel = InterfaceBuilder.makeLabel()
-    lazy var readinessElipseView = InterfaceBuilder.makeElipseView()
-    
+    lazy var customBackgroundView = InterfaceBuilder.makeView()
+    lazy var separatorView = InterfaceBuilder.makeSeparatorView()
+
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
         setAsSelectedOrHighlighted(selectedOrHighlighted: highlighted, animated: animated)
         super.setHighlighted(highlighted, animated: animated)
@@ -27,51 +28,60 @@ class TaskCell : UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setSubviews()
-        setupConstraints()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setSubviews()
-        setupConstraints()
     }
     
     func configure(with task: TaskModel) {
         titleLabel.text = "Title: " + task.title
         subtitleLabel.text = "Subtitle: " + task.subTitle
-        readinessElipseView.backgroundColor = task.isReady ? .green : .red
+        customBackgroundView.backgroundColor = task.isReady ? .green.withAlphaComponent(0.2) : .red.withAlphaComponent(0.3)
+        setupConstraints()
     }
     
     private func setSubviews() {
         selectionStyle = .none
-        backgroundColor = .other
-        addSubviews(readinessElipseView, titleLabel, subtitleLabel)
+        backgroundColor = .white
+        addSubview(customBackgroundView)
+        customBackgroundView.addSubviews(titleLabel,
+                    subtitleLabel,
+                    separatorView)
     }
        
     func setupConstraints() {
+//        NSLayoutConstraint.activate([
+//            contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 64)
+//        ])
+        
         NSLayoutConstraint.activate([
-            contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 64)
+            customBackgroundView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            customBackgroundView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            customBackgroundView.topAnchor.constraint(equalTo: topAnchor),
+            customBackgroundView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            readinessElipseView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            readinessElipseView.heightAnchor.constraint(equalTo: heightAnchor),
-            readinessElipseView.widthAnchor.constraint(equalTo: readinessElipseView.heightAnchor),
-            readinessElipseView.leadingAnchor.constraint(equalTo: leadingAnchor)
-        ])
-        
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: topAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: readinessElipseView.trailingAnchor, constant: 12),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 24),
-            titleLabel.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 1/2)
+            titleLabel.topAnchor.constraint(equalTo: customBackgroundView.topAnchor, constant: 8),
+            titleLabel.leadingAnchor.constraint(equalTo: customBackgroundView.leadingAnchor, constant: 24),
+            titleLabel.trailingAnchor.constraint(equalTo: customBackgroundView.trailingAnchor, constant: -24),
+            titleLabel.heightAnchor.constraint(equalToConstant: 32)
         ])
         
         NSLayoutConstraint.activate([
             subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
-            subtitleLabel.leadingAnchor.constraint(equalTo: readinessElipseView.trailingAnchor, constant: 12),
-            subtitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 24),
-            subtitleLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
+            subtitleLabel.leadingAnchor.constraint(equalTo: customBackgroundView.leadingAnchor, constant: 24),
+            subtitleLabel.trailingAnchor.constraint(equalTo: customBackgroundView.trailingAnchor, constant: -24),
+            subtitleLabel.bottomAnchor.constraint(equalTo: customBackgroundView.bottomAnchor, constant: -8)
+        ])
+        
+        NSLayoutConstraint.activate([
+            separatorView.bottomAnchor.constraint(equalTo: customBackgroundView.bottomAnchor),
+            separatorView.leadingAnchor.constraint(equalTo: customBackgroundView.leadingAnchor),
+            separatorView.trailingAnchor.constraint(equalTo: customBackgroundView.trailingAnchor),
+            separatorView.heightAnchor.constraint(equalToConstant: 1)
         ])
     }
 }

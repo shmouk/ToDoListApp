@@ -1,7 +1,7 @@
 import Foundation
 
 class AddingTaskViewModel {
-    let taskAPI = TaskAPI()
+    let taskAPI = TaskAPI.shared
     
     func createTask(titleText: String?, descriptionText: String?, completion: @escaping (String) -> Void) {
         guard let titleText = titleText else {

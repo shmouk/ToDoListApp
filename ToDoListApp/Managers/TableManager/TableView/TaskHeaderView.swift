@@ -22,7 +22,7 @@ class TaskHeaderView: UITableViewHeaderFooterView {
     }
     
     private func setSubviews() {
-        addSubviews(customTitleLabel)
+        addSubview(customTitleLabel)
     }
     
     private func setViewAppearance() {
@@ -31,12 +31,6 @@ class TaskHeaderView: UITableViewHeaderFooterView {
     }
     
     func setupConstraints() {
-        contentView.translatesAutoresizingMaskIntoConstraints = true
-        
-        NSLayoutConstraint.activate([
-            contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 42)
-        ])
-        
         NSLayoutConstraint.activate([
             customTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
             customTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),

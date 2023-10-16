@@ -2,19 +2,18 @@ import Foundation
 import RealmSwift
 
 class TaskAPI {
-    let notificationCenterManager = NotificationCenterManager.shared
+    static let shared = TaskAPI()
+
+    private var notificationToken: NotificationToken?
+
+    var taskData = Bindable([TaskModel]())
+
+    private init() {
+        startObserve()
+    }
     
-    var readyTaskData = [TaskModel]() {
-       didSet {
-           print("1. modddiiiiiiffyyyyy")
-           notificationCenterManager.postCustomNotification(named: .modifyDataNotification)
-       }
-   }
-    var currentTaskData = [TaskModel]() {
-        didSet {
-            print("2. modddiiiiiiffyyyyy")
-            notificationCenterManager.postCustomNotification(named: .modifyDataNotification)
-        }
+    deinit {
+        notificationToken?.invalidate()
     }
     
     func writeData(_ titleText: String, _ descriptionText: String, completion: @escaping ResultCompletion) {
@@ -41,27 +40,32 @@ class TaskAPI {
         }
     }
     
-    
-    func readData(completion: @escaping ResultCompletion) {
-        DispatchQueue.main.async {
-            do {
-                let realm = try Realm()
-                let data = realm.objects(TaskModel.self)
-                for task in data {
-                    task.isReady ? self.readyTaskData.append(task) : self.currentTaskData.append(task)
+    private func startObserve() {
+        do {
+            let realm = try Realm()
+            let objects = realm.objects(TaskModel.self)
+            
+            notificationToken = objects.observe { [weak self] changes in
+                guard let self = self else { return }
+                
+                switch changes {
+                case .initial(let data):
+                    taskData.value = Array(data)
+                    
+                case .update(let data, _, _, _):
+                    taskData.value = Array(data)
+                    
+                case .error(let error):
+                    print(error)
                 }
-                print("tasks", self.readyTaskData.count, self.currentTaskData.count)
-
-                completion(.success(RequestComplete.successDownload))
-
-            } catch let error as NSError {
-                completion(.failure(error))
             }
+        } catch {
+            print(RequestError.invalidRequest.info)
         }
     }
     
     func updateValue(_ data: TaskModel, completion: @escaping ResultCompletion) {
-        DispatchQueue.main.async { [weak self] in
+        DispatchQueue.main.async {
             do {
                 let realm = try Realm()
                 let tasks = realm.objects(TaskModel.self)
@@ -72,7 +76,6 @@ class TaskAPI {
                 
                 try realm.write {
                     task.isReady = true
-                    self?.modifyValue(task)
                     completion(.success(RequestComplete.successUpdate))
                 }
             } catch let error as NSError {
@@ -81,31 +84,25 @@ class TaskAPI {
         }
     }
     
-    func modifyValue(_ task: TaskModel) {
-        currentTaskData.removeAll(where: { $0.id == task.id })
-        readyTaskData.append(task)
+    func removeData(_ data: TaskModel, completion: @escaping ResultCompletion) {
+        DispatchQueue.main.async {
+            do {
+                let realm = try Realm()
+                let objectToDelete = realm.objects(TaskModel.self).filter("id == %@", data.id).first
+
+                guard let object = objectToDelete else {
+                    completion(.failure(RequestError.deleteError))
+                    return
+                }
+                try realm.write {
+                    realm.delete(object)
+                    completion(.success(RequestComplete.successUpdate))
+                }
+            } catch let error as NSError {
+                completion(.failure(error))
+            }
+        }
     }
-    
-//    func removeData(_ data: TaskModel, completion: @escaping ResultCompletion) {
-//        DispatchQueue.main.async {
-//            do {
-//                let realm = try Realm()
-//                let objectToDelete = realm.objects(TaskModel.self).filter("id == %@", data.id).first
-//                
-//                guard let object = objectToDelete else {
-//                    completion(.failure(RequestError.deleteError))
-//                    return
-//                }
-//                try realm.write {
-//                    realm.delete(object)
-//                    completion(.success(RequestComplete.successDownload))
-//
-//                }
-//            } catch let error as NSError {
-//                completion(.failure(error))
-//            }
-//        }
-//    }
     
     private func randomString(withLength length: Int) -> String {
         let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()_-"
