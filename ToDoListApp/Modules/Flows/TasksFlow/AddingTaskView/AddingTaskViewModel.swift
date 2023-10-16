@@ -4,13 +4,12 @@ class AddingTaskViewModel {
     let taskAPI = TaskAPI.shared
     
     func createTask(titleText: String?, descriptionText: String?, completion: @escaping (String) -> Void) {
-        guard let titleText = titleText else {
-            completion(RequestError.invalidText.info)
-            return
-        }
-        
-        guard let descriptionText = descriptionText,
-              descriptionText != "Input text" else {
+        guard titleText != "",
+              descriptionText != DefaultText.inputText,
+              descriptionText != "",
+              descriptionText != " ",
+              let titleText = titleText,
+              let descriptionText = descriptionText else {
             completion(RequestError.invalidText.info)
             return
         }

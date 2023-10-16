@@ -38,7 +38,7 @@ extension AddingTaskViewController {
         ])
         
         NSLayoutConstraint.activate([
-            separatorView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
+            separatorView.topAnchor.constraint(equalTo: view.topAnchor, constant: 14),
             separatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             separatorView.widthAnchor.constraint(equalToConstant: 64),
             separatorView.heightAnchor.constraint(equalToConstant: 4)

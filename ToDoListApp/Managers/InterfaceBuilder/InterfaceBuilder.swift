@@ -68,7 +68,7 @@ final class InterfaceBuilder {
         textField.layer.borderWidth = 1.0
         textField.layer.cornerRadius = 16
         textField.layer.masksToBounds = true
-        let placeholderText = "Input text"
+        let placeholderText = DefaultText.inputText
         let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.lightGray]
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         textField.attributedPlaceholder = attributedPlaceholder
@@ -91,7 +91,7 @@ final class InterfaceBuilder {
         textView.font = UIFont.systemFont(ofSize: 14)
         textView.textAlignment = .left
         textView.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-        textView.text = "Input text"
+        textView.text = DefaultText.inputText
         textView.isScrollEnabled = false
         textView.layer.masksToBounds = true
         textView.isEditable = true

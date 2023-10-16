@@ -7,9 +7,9 @@ class AddingTaskViewController: BaseViewController {
     
     lazy var titleTextField = InterfaceBuilder.makeTextField()
     lazy var descriptionTextView = InterfaceBuilder.makeTextView()
-    lazy var createTaskButton = InterfaceBuilder.makeButton(withTitle: "Create Task")
-    lazy var titleLabel = InterfaceBuilder.makeLabel(title: Constants.title)
-    lazy var subtitleLabel = InterfaceBuilder.makeLabel(title: Constants.subtitle)
+    lazy var createTaskButton = InterfaceBuilder.makeButton(withTitle: DefaultText.createTask)
+    lazy var titleLabel = InterfaceBuilder.makeLabel(title: DefaultText.title)
+    lazy var subtitleLabel = InterfaceBuilder.makeLabel(title: DefaultText.subtitle)
     lazy var separatorView = InterfaceBuilder.makeSeparatorView(alpha: 0.4)
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -58,8 +58,8 @@ private extension AddingTaskViewController {
             guard let self = self else { return }
             
             AlertManager.showAlert(title: infoText, viewController: self)
-            self.titleTextField.text = ""
-            self.descriptionTextView.text = "Input text"
+            self.titleTextField.text = nil
+            self.descriptionTextView.text = DefaultText.inputText
         }
     }
 }
@@ -70,14 +70,35 @@ extension AddingTaskViewController: UITextFieldDelegate {
         return true
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        isLengthLimit(textField, range, string)
+        return isLengthLimit(textField, range, string) && !isStartsWithEmptyLine(textField, range, string)
     }
-    
+
     private func isLengthLimit(_ textField: UITextField, _ range: NSRange, _ string: String) -> Bool {
-        guard let text = textField.text else { return true }
+        guard let text = textField.text else {
+            return true
+        }
+        
         let newLength = text.count + string.count - range.length
         return newLength <= 10
     }
+
+    private func isStartsWithEmptyLine(_ textField: UITextField, _ range: NSRange, _ string: String) -> Bool {
+        guard let currentText = textField.text,
+              let textRange = Range(range, in: currentText) else {
+            return true
+        }
+        
+        let newText = currentText.replacingCharacters(in: textRange, with: string)
+        let trimmedText = newText.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        if trimmedText.isEmpty && !newText.isEmpty {
+            textField.text = ""
+            return true
+        }
+        
+        return false
+    }
+
 }
 
 extension AddingTaskViewController: UITextViewDelegate {
@@ -95,7 +116,7 @@ extension AddingTaskViewController: UITextViewDelegate {
             return false
         }
         let newText = (textView.text as NSString).replacingCharacters(in: range, with: text)
-        return newText.count <= 90
+        return newText.count <= 80
     }
 }
 

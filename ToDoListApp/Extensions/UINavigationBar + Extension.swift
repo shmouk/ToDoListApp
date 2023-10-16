@@ -2,7 +2,6 @@ import UIKit
 
 extension UINavigationController {
     func setupAppearance() {
-        
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = .white

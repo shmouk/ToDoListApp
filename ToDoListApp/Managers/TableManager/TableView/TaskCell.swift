@@ -36,8 +36,8 @@ class TaskCell : UITableViewCell {
     }
     
     func configure(with task: TaskModel) {
-        titleLabel.text = "Title: " + task.title
-        subtitleLabel.text = "Subtitle: " + task.subTitle
+        titleLabel.text = DefaultText.title + task.title
+        subtitleLabel.text = DefaultText.subtitle + task.subTitle
         customBackgroundView.backgroundColor = task.isReady ? .green.withAlphaComponent(0.2) : .red.withAlphaComponent(0.3)
         setupConstraints()
     }

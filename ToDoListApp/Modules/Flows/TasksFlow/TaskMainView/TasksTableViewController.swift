@@ -41,7 +41,7 @@ class TasksTableViewController: BaseViewController {
     }
     
     private func setupResponsibilities() {
-        self.navigationItem.title = Constants.taskList
+        self.navigationItem.title = DefaultText.taskList
         self.navigationItem.rightBarButtonItem = rightNavButton
         rightNavButton.target = self
         rightNavButton.action = #selector(addTaskTapped)
@@ -112,7 +112,7 @@ extension TasksTableViewController: UITableViewDelegate {
             return
         }
 
-        AlertManager.showConfirmationAlert(message: Constants.isComplete, viewController: self) { [weak self] in
+        AlertManager.showConfirmationAlert(message: DefaultText.isComplete, viewController: self) { [weak self] in
             self?.viewModel.updateTask(task, completion: updateCompletionHandler)
         }
     }
@@ -121,7 +121,7 @@ extension TasksTableViewController: UITableViewDelegate {
 extension TasksTableViewController {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: TaskHeaderView.description()) as? TaskHeaderView
-        let taskHeaderTitle = [Constants.current, Constants.complete]
+        let taskHeaderTitle = [DefaultText.current, DefaultText.complete]
         headerView?.configure(with: taskHeaderTitle[section])
         return headerView
     }

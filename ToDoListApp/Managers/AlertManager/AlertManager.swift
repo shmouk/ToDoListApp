@@ -11,7 +11,7 @@ class AlertManager {
         }
     }
     
-    static func showConfirmationAlert(title: String = Constants.message, message: String, viewController: UIViewController, completion: @escaping () -> Void) {
+    static func showConfirmationAlert(title: String = DefaultText.message, message: String, viewController: UIViewController, completion: @escaping () -> Void) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)

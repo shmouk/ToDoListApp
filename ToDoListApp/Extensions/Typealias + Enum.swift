@@ -12,16 +12,16 @@ enum RequestError: Error {
         switch self {
             
         case .invalidText:
-            return Constants.invalidText
+            return DefaultText.invalidText
             
         case .invalidRequest:
-            return Constants.invalidRequest
+            return DefaultText.invalidRequest
             
         case .updateValueError:
-            return Constants.updateValueError
+            return DefaultText.updateValueError
             
         case .deleteError:
-            return Constants.deleteError
+            return DefaultText.deleteError
         }
     }
 }
@@ -35,13 +35,13 @@ enum RequestComplete {
         switch self {
             
         case .successUpload:
-            return Constants.successUpload
+            return DefaultText.successUpload
             
         case .successDownload:
-            return Constants.successUpload
+            return DefaultText.successUpload
          
         case .successUpdate:
-            return Constants.successUpdate
+            return DefaultText.successUpdate
         }
     }
 }
