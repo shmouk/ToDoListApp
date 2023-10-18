@@ -28,8 +28,8 @@ class TaskCell : UITableViewCell {
     }
     
     func configure(with task: TaskModel) {
-        titleLabel.text = DefaultText.title + task.title
-        subtitleLabel.text = DefaultText.subtitle + task.subTitle
+        titleLabel.text = "title".localized + task.title
+        subtitleLabel.text = "subtitle".localized + task.subTitle
         customBackgroundView.backgroundColor = task.isReady ? .green.withAlphaComponent(0.2) : .red.withAlphaComponent(0.3)
         setupConstraints()
     }

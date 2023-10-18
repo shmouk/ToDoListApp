@@ -1,15 +1,29 @@
 import UIKit
-import RealmSwift
+
+protocol  TasksViewControllerDelegate: AnyObject {
+    func openAddingTaskViewController()
+}
 
 class TasksTableViewController: BaseViewController {
-    private let viewModel = TasksTableViewModel()
+    private let viewModel: TasksTableViewModel
+    
     private let dataSource = TaskDataSource()
+    private let alertManager = AlertManager.shared
 
-    var coordinator: CoordinatorProtocol?
-
+    weak var delegate: TasksViewControllerDelegate?
+    
     lazy var tableView = InterfaceBuilder.makeTableView()
     lazy var rightNavButton = InterfaceBuilder.makeCustomNavBarButton()
 
+    init(viewModel: TasksTableViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loadData()
@@ -41,7 +55,7 @@ class TasksTableViewController: BaseViewController {
     }
     
     private func setupResponsibilities() {
-        self.navigationItem.title = DefaultText.taskList
+        self.navigationItem.title = "taskList".localized
         self.navigationItem.rightBarButtonItem = rightNavButton
         rightNavButton.target = self
         rightNavButton.action = #selector(addTaskTapped)
@@ -69,7 +83,7 @@ class TasksTableViewController: BaseViewController {
 private extension TasksTableViewController {
     @objc
     private func addTaskTapped() {
-        coordinator?.presentAddedTaskViewController()
+        self.delegate?.openAddingTaskViewController()
     }
 }
 
@@ -103,7 +117,7 @@ extension TasksTableViewController: UITableViewDelegate {
         let updateCompletionHandler: (String) -> Void = { [weak self] text in
             guard let self = self else { return }
             
-            AlertManager.showAlert(title: text, viewController: self)
+            alertManager.showAlert(title: text, viewController: self)
             self.reloadTable()
         }
         
@@ -112,7 +126,7 @@ extension TasksTableViewController: UITableViewDelegate {
             return
         }
 
-        AlertManager.showConfirmationAlert(message: DefaultText.isComplete, viewController: self) { [weak self] in
+        alertManager.showConfirmationAlert(message: "isComplete".localized, viewController: self) { [weak self] in
             self?.viewModel.updateTask(task, completion: updateCompletionHandler)
         }
     }
@@ -121,7 +135,7 @@ extension TasksTableViewController: UITableViewDelegate {
 extension TasksTableViewController {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: TaskHeaderView.description()) as? TaskHeaderView
-        let taskHeaderTitle = [DefaultText.current, DefaultText.complete]
+        let taskHeaderTitle = ["current".localized, "completed".localized]
         headerView?.configure(with: taskHeaderTitle[section])
         return headerView
     }

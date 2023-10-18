@@ -1,29 +1,31 @@
 import UIKit
 
 class TaskCoordinator: CoordinatorProtocol {
-    var navigationController: UINavigationController
+    let navigationController: UINavigationController
     
-    init(navigationController: UINavigationController) {
+    required init(navigationController: UINavigationController) {
         self.navigationController = navigationController
         self.navigationController.setupAppearance()
     }
-
+    
     func start() {
-        let viewController = TasksTableViewController()
-        viewController.coordinator = self
+        let viewModel = TasksTableViewModel()
+        let viewController = TasksTableViewController(viewModel: viewModel)
+        viewController.delegate = self
         navigationController.pushViewController(viewController, animated: true)
     }
-    
-    func presentAddedTaskViewController() {
-        let viewController = AddingTaskViewController()
+}
+
+extension TaskCoordinator: TasksViewControllerDelegate {
+    func openAddingTaskViewController() {
+        let viewModel = AddingTaskViewModel()
+        let viewController = AddingTaskViewController(viewModel: viewModel)
         navigationController.modalPresentationStyle = .custom
         
         if let presentationController = viewController.presentationController as? UISheetPresentationController {
             presentationController.detents = [.medium()]
         }
-        DispatchQueue.main.async { [weak self] in
-            self?.navigationController.present(viewController, animated: true)
-        }
+        
+        self.navigationController.present(viewController, animated: true)
     }
 }
-

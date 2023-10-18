@@ -1,4 +1,4 @@
-import UIKit
+import UIKit.UIViewController
 
 extension UINavigationController {
     func setupAppearance() {

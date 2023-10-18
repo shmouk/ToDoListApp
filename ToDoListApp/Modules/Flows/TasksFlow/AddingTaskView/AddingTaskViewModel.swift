@@ -5,7 +5,7 @@ class AddingTaskViewModel {
     
     func createTask(titleText: String?, descriptionText: String?, completion: @escaping (String) -> Void) {
         guard titleText != "",
-              descriptionText != DefaultText.inputText,
+              descriptionText != "inputText".localized,
               descriptionText != "",
               descriptionText != " ",
               let titleText = titleText,

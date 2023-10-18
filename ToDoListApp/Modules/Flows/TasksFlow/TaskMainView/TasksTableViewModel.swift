@@ -4,7 +4,6 @@ class TasksTableViewModel {
     let taskAPI = TaskAPI.shared
     var taskData = Bindable([[TaskModel]]())
 
-    
     func readTask() {
         taskAPI.taskData.bind { [weak self] data in
             guard let self = self else { return }

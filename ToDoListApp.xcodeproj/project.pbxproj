@@ -19,7 +19,8 @@
 		AD993E4D2ADB1FD40096A50B /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = AD993E4C2ADB1FD40096A50B /* RealmSwift */; };
 		AD993E4F2ADB25C60096A50B /* UINavigationBar + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD993E4E2ADB25C60096A50B /* UINavigationBar + Extension.swift */; };
 		AD993E532ADB41CA0096A50B /* RoundedCellDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD993E522ADB41CA0096A50B /* RoundedCellDecorator.swift */; };
-		AD993E552ADB53EA0096A50B /* String + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD993E542ADB53EA0096A50B /* String + Extension.swift */; };
+		AD9EB5FD2ADFEC8600FB0C94 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = AD9EB5FC2ADFEC8600FB0C94 /* Localizable.xcstrings */; };
+		AD9EB6002ADFF28C00FB0C94 /* String + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9EB5FF2ADFF28C00FB0C94 /* String + Extension.swift */; };
 		ADE5AEDA2AD9AE42004C3EAA /* AddingTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADE5AED92AD9AE42004C3EAA /* AddingTaskViewController.swift */; };
 		ADE5AEDC2AD9AE6F004C3EAA /* TaskCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADE5AEDB2AD9AE6F004C3EAA /* TaskCoordinator.swift */; };
 		ADFFB8FC2AD9B591004B21A7 /* TaskModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADFFB8FB2AD9B591004B21A7 /* TaskModel.swift */; };
@@ -64,7 +65,8 @@
 		AD88B82C2ADBECFF00AF860A /* TaskHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskHeaderView.swift; sourceTree = "<group>"; };
 		AD993E4E2ADB25C60096A50B /* UINavigationBar + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationBar + Extension.swift"; sourceTree = "<group>"; };
 		AD993E522ADB41CA0096A50B /* RoundedCellDecorator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCellDecorator.swift; sourceTree = "<group>"; };
-		AD993E542ADB53EA0096A50B /* String + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String + Extension.swift"; sourceTree = "<group>"; };
+		AD9EB5FC2ADFEC8600FB0C94 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		AD9EB5FF2ADFF28C00FB0C94 /* String + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String + Extension.swift"; sourceTree = "<group>"; };
 		ADE5AED92AD9AE42004C3EAA /* AddingTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddingTaskViewController.swift; sourceTree = "<group>"; };
 		ADE5AEDB2AD9AE6F004C3EAA /* TaskCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCoordinator.swift; sourceTree = "<group>"; };
 		ADFFB8FB2AD9B591004B21A7 /* TaskModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskModel.swift; sourceTree = "<group>"; };
@@ -119,7 +121,7 @@
 				ADFFB8F42AD9B42E004B21A7 /* Managers */,
 				ADE5AEDD2AD9AE7C004C3EAA /* Modules */,
 				ADFFB9042AD9BA6C004B21A7 /* Extensions */,
-				AD6CAF202AD9AD0700793015 /* Assets.xcassets */,
+				AD9EB5FE2ADFECA200FB0C94 /* Resources */,
 				AD6CAF222AD9AD0700793015 /* LaunchScreen.storyboard */,
 				AD6CAF252AD9AD0700793015 /* Info.plist */,
 			);
@@ -132,6 +134,15 @@
 				AD71302E2ADDABF80077A3BD /* KeyboardNotificationManager.swift */,
 			);
 			path = KeyboardNotificationManager;
+			sourceTree = "<group>";
+		};
+		AD9EB5FE2ADFECA200FB0C94 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				AD6CAF202AD9AD0700793015 /* Assets.xcassets */,
+				AD9EB5FC2ADFEC8600FB0C94 /* Localizable.xcstrings */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		ADE5AEDD2AD9AE7C004C3EAA /* Modules */ = {
@@ -224,6 +235,7 @@
 			children = (
 				ADFFB90E2ADACA0F004B21A7 /* Bindable */,
 				ADFFB8FB2AD9B591004B21A7 /* TaskModel.swift */,
+				ADFFB91E2ADAE754004B21A7 /* Typealias + Enum.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -242,10 +254,9 @@
 			isa = PBXGroup;
 			children = (
 				ADFFB9052AD9BA86004B21A7 /* UIView + Extension.swift */,
-				AD993E542ADB53EA0096A50B /* String + Extension.swift */,
 				AD7130292ADD6A9F0077A3BD /* UIViewController + Extension.swift */,
 				AD993E4E2ADB25C60096A50B /* UINavigationBar + Extension.swift */,
-				ADFFB91E2ADAE754004B21A7 /* Typealias + Enum.swift */,
+				AD9EB5FF2ADFF28C00FB0C94 /* String + Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -351,6 +362,7 @@
 			files = (
 				AD6CAF242AD9AD0700793015 /* LaunchScreen.storyboard in Resources */,
 				AD6CAF212AD9AD0700793015 /* Assets.xcassets in Resources */,
+				AD9EB5FD2ADFEC8600FB0C94 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -373,6 +385,7 @@
 				ADFFB9002AD9B6A3004B21A7 /* TaskCell.swift in Sources */,
 				AD88B82D2ADBECFF00AF860A /* TaskHeaderView.swift in Sources */,
 				ADFFB9132ADAD29B004B21A7 /* BaseViewController.swift in Sources */,
+				AD9EB6002ADFF28C00FB0C94 /* String + Extension.swift in Sources */,
 				AD6CAF1C2AD9AD0300793015 /* TasksTableViewController.swift in Sources */,
 				ADFFB91D2ADAE68C004B21A7 /* AlertManager.swift in Sources */,
 				ADFFB9212ADAE935004B21A7 /* TaskAPI.swift in Sources */,
@@ -380,7 +393,6 @@
 				ADFFB91F2ADAE754004B21A7 /* Typealias + Enum.swift in Sources */,
 				ADE5AEDC2AD9AE6F004C3EAA /* TaskCoordinator.swift in Sources */,
 				ADFFB9102ADACAEF004B21A7 /* TasksTableViewControllerPinners.swift in Sources */,
-				AD993E552ADB53EA0096A50B /* String + Extension.swift in Sources */,
 				AD6CAF182AD9AD0300793015 /* AppDelegate.swift in Sources */,
 				ADE5AEDA2AD9AE42004C3EAA /* AddingTaskViewController.swift in Sources */,
 				ADFFB90C2ADAC8C7004B21A7 /* AddingTaskViewModel.swift in Sources */,
@@ -536,6 +548,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -563,6 +576,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

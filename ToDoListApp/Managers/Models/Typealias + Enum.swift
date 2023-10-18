@@ -1,3 +1,5 @@
+import Foundation
+
 typealias ResultCompletion = (Result<RequestComplete, Error>) -> Void
 typealias RequestResult = Result<RequestComplete, Error>
 typealias TaskCompletion = (Result<TaskModel, Error>) -> Void
@@ -12,16 +14,16 @@ enum RequestError: Error {
         switch self {
             
         case .invalidText:
-            return DefaultText.invalidText
+            return "invalidText".localized
             
         case .invalidRequest:
-            return DefaultText.invalidRequest
+            return "invalidRequest".localized
             
         case .updateValueError:
-            return DefaultText.updateValueError
+            return "updateValueError".localized
             
         case .deleteError:
-            return DefaultText.deleteError
+            return "deleteError".localized
         }
     }
 }
@@ -35,13 +37,13 @@ enum RequestComplete {
         switch self {
             
         case .successUpload:
-            return DefaultText.successUpload
+            return "successUpload".localized
             
         case .successDownload:
-            return DefaultText.successUpload
+            return "successUpload".localized
          
         case .successUpdate:
-            return DefaultText.successUpdate
+            return "successUpdate".localized
         }
     }
 }

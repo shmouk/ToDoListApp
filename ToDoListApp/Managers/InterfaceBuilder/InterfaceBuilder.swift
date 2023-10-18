@@ -9,7 +9,7 @@ final class InterfaceBuilder {
         return tableView
     }
     
-    static func makeLabel(title: String? = nil, textColor: UIColor = .tint) -> UILabel {
+    static func makeLabel(title: String? = nil, textColor: UIColor? = UIColor(named: "TintColor")) -> UILabel {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = textColor
@@ -36,13 +36,13 @@ final class InterfaceBuilder {
     }
     
     static func makeDeleteImage() -> UIImage? {
-        .init(named: "deleteIcon")
+        .init(named: "DeleteIcon")
     }
     
     static func makeCustomNavBarButton() -> UIBarButtonItem {
         let button = UIBarButtonItem()
         button.image = UIImage(systemName: "plus")
-        button.tintColor = UIColor(named: "ButtonColor")
+        button.tintColor = UIColor(named: "TintColor")
         return button
     }
     
@@ -68,7 +68,7 @@ final class InterfaceBuilder {
         textField.layer.borderWidth = 1.0
         textField.layer.cornerRadius = 16
         textField.layer.masksToBounds = true
-        let placeholderText = DefaultText.inputText
+        let placeholderText = "inputText".localized
         let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.lightGray]
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         textField.attributedPlaceholder = attributedPlaceholder
@@ -91,11 +91,10 @@ final class InterfaceBuilder {
         textView.font = UIFont.systemFont(ofSize: 14)
         textView.textAlignment = .left
         textView.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-        textView.text = DefaultText.inputText
+        textView.text = "inputText".localized
         textView.isScrollEnabled = false
         textView.layer.masksToBounds = true
         textView.isEditable = true
-        //        textView.textContainer.lineBreakMode = .byWordWrapping
         return textView
     }
 }

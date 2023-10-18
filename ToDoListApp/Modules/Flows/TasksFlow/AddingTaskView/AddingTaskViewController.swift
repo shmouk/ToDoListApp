@@ -1,16 +1,25 @@
 import UIKit
 
 class AddingTaskViewController: BaseViewController {
-    private let viewModel = AddingTaskViewModel()
-
-    var coordinator: CoordinatorProtocol?
+    private let viewModel: AddingTaskViewModel
+    
+    private let alertManager = AlertManager.shared
     
     lazy var titleTextField = InterfaceBuilder.makeTextField()
     lazy var descriptionTextView = InterfaceBuilder.makeTextView()
-    lazy var createTaskButton = InterfaceBuilder.makeButton(withTitle: DefaultText.createTask)
-    lazy var titleLabel = InterfaceBuilder.makeLabel(title: DefaultText.title)
-    lazy var subtitleLabel = InterfaceBuilder.makeLabel(title: DefaultText.subtitle)
+    lazy var createTaskButton = InterfaceBuilder.makeButton(withTitle: "createTask".localized)
+    lazy var titleLabel = InterfaceBuilder.makeLabel(title: "title".localized)
+    lazy var subtitleLabel = InterfaceBuilder.makeLabel(title: "subtitle".localized)
     lazy var separatorView = InterfaceBuilder.makeSeparatorView(alpha: 0.4)
+    
+    init(viewModel: AddingTaskViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         KeyboardNotificationManager.hideKeyboard()
@@ -57,9 +66,9 @@ private extension AddingTaskViewController {
         viewModel.createTask(titleText: title, descriptionText: subtitle) { [weak self] infoText in
             guard let self = self else { return }
             
-            AlertManager.showAlert(title: infoText, viewController: self)
+            alertManager.showAlert(title: infoText, viewController: self)
             self.titleTextField.text = nil
-            self.descriptionTextView.text = DefaultText.inputText
+            self.descriptionTextView.text = "inputText".localized
         }
     }
 }
